@@ -5,7 +5,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def global_variable(request):
     allcategory = BlogCategory.objects.all()
-    print(allcategory)
     remen = BlogArticle.objects.filter(tui__id=2)[:6]
     tags = BlogTag.objects.all()
     return locals()

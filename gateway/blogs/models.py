@@ -10,6 +10,14 @@ from django.contrib.auth.models import User
 class BlogCategory(models.Model):
     name = models.CharField('博客分类', max_length=100)
     index = models.IntegerField(default=999, verbose_name='分类排序')
+    parent = models.ForeignKey('self', default=0, on_delete=models.CASCADE, blank=True, null=True, related_name='children', verbose_name='上级分类',
+                               limit_choices_to={'is_abort': False, 'is_root': True})
+    is_root = models.BooleanField(default=False, verbose_name='是否是一级分类')
+    sort = models.IntegerField(default=0, verbose_name='排序值')
+    thumb = models.ImageField(upload_to='category/%Y/%m', verbose_name='分类图片', null=True, blank=True)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
+    created_time = models.DateTimeField('发布时间', auto_now_add=True)
+    modified_time = models.DateTimeField('修改时间', auto_now=True)
 
     class Meta:
         verbose_name = '博客分类'
@@ -22,6 +30,7 @@ class BlogCategory(models.Model):
 # 文章标签
 class BlogTag(models.Model):
     name = models.CharField('文章标签', max_length=100)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
 
     class Meta:
         verbose_name = '文章标签'
@@ -34,6 +43,7 @@ class BlogTag(models.Model):
 # 推荐位
 class BlogTui(models.Model):
     name = models.CharField('推荐位', max_length=100)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
 
     class Meta:
         verbose_name = '推荐位'
@@ -63,6 +73,7 @@ class BlogArticle(models.Model):
     """
     views = models.PositiveIntegerField('阅读量', default=0)
     tui = models.ForeignKey(BlogTui, on_delete=models.DO_NOTHING, verbose_name='推荐位', blank=True, null=True)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
 
     created_time = models.DateTimeField('发布时间', auto_now_add=True)
     modified_time = models.DateTimeField('修改时间', auto_now=True)
@@ -81,6 +92,7 @@ class BlogBanner(models.Model):
     thumb = models.ImageField('轮播图', upload_to='banner/')
     link_url = models.URLField('图片链接', max_length=100)
     is_active = models.BooleanField('是否是active', default=False)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
 
     def __str__(self):
         return self.text_info
@@ -94,6 +106,7 @@ class BlogBanner(models.Model):
 class BlogLink(models.Model):
     name = models.CharField('链接名称', max_length=20)
     linkurl = models.URLField('网址', max_length=100)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
 
     def __str__(self):
         return self.name

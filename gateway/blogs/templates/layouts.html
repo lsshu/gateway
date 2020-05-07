@@ -7,12 +7,12 @@
     <meta name="keywords" content="个人博客" />
     <meta name="description" content="个人博客" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="{% static "css/base.css" %}" rel="stylesheet">
-    <link href="{% static "css/m.css" %}" rel="stylesheet">
-    <script src="{% static "js/jquery-1.8.3.min.js" %}" ></script>
-    <script src="{% static "js/main.js" %}"></script>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+    <link href="{% static 'css/m.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery-1.8.3.min.js' %}" ></script>
+    <script src="{% static 'js/main.js' %}"></script>
     <!--[if lt IE 9]>
-    <script src="{% static "js/modernizr.js" %}"></script>
+    <script src="{% static 'js/modernizr.js' %}"></script>
     <![endif]-->
     {% block head %}
     {% endblock %}
@@ -29,7 +29,7 @@
                 <input name="Submit" class="input_submit" value="搜索" type="submit">
             </form>
         </div>
-        <div class="logo"><a href="#"><img src="{% static "img/logo.png" %}">
+        <div class="logo"><a href="#"><img src="{% static 'images/logo.png' %}">
                 <h2 class="logo-title">青于蓝</h2>
                 <p class="logo-text">排名技术建站，让你对手追赶</p>
             </a> </div>
@@ -41,7 +41,7 @@
             <ul id="starlist">
                 <li><a href="/">网站首页</a></li>
                 {% for category in allcategory %}
-                    <li><a href="{% url 'index' %}list-{{ category.id }}.html">{{ category.name }}</a></li>
+                    <li><a href="{% url 'blog:list' category.id %}">{{ category.name }}</a></li>
 {#                    @if(!$category->children->isEmpty())#}
 {#                        <li class="menu">#}
 {#                            <a href="{% url 'index' %}list-{{ category.id }}.html">{{ category.name }}</a>#}
@@ -100,8 +100,8 @@
     <div class="footer box">
         <div class="wxbox">
             <ul>
-{#                {{--<li><img src="{% static "img/wxgzh.jpg" %}"><span>微信公众号</span></li>--}}#}
-{#                {{--<li><img src="{% static "img/wx.png" %}"><span>我的微信</span></li>--}}#}
+{#                {{--<li><img src="{% static 'images/wxgzh.jpg' %}"><span>微信公众号</span></li>--}}#}
+{#                {{--<li><img src="{% static 'images/wx.png' %}"><span>我的微信</span></li>--}}#}
             </ul>
         </div>
         <div class="endnav">
@@ -149,7 +149,7 @@
                 <section class="weixin-section">
                     <div class="weixin-info">
                         <p>个人微信扫码</p>
-                        <img src="{% static "img/wx.png" %}">
+                        <img src="{% static 'images/wx.png' %}">
                         <p class="text12">工作时间</p>
                         <p class="text12">周一至周日 9:00-21:00</p>
                     </div>
@@ -159,8 +159,8 @@
                 <section class="dashang-section">
                     <p>如果你觉得本站很棒，可以通过扫码支付打赏哦！</p>
                     <ul>
-                        <li><img src="{% static "img/weipayimg.jpg" %}">微信收款码</li>
-                        <li><img src="{% static "img/alipayimg.jpg" %}">支付宝收款码</li>
+                        <li><img src="{% static 'images/weipayimg.jpg' %}">微信收款码</li>
+                        <li><img src="{% static 'images/alipayimg.jpg' %}">支付宝收款码</li>
                     </ul>
                 </section>
             </li>

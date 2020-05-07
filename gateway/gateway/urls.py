@@ -19,7 +19,7 @@ from django.views.static import serve
 from django.conf import settings
 
 urlpatterns = [
-    path('blog/', include('blogs.urls')),
+    path('blog/', include('blogs.urls', namespace='blog')),
     path('admin/', admin.site.urls),
     path('ueditor/', include('components.ueditor.urls')),  # 添加DjangoUeditor的URL
     re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
