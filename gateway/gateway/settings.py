@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = '5)lb8#fw5s!i79tk3a5fw2i0t6&lctr-f2@75@+em!%1)v4f^t'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -65,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
                 'blogs.views.global_variable'
             ],
         },
@@ -72,7 +71,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'gateway.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -83,7 +81,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -103,7 +100,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
@@ -117,38 +113,35 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-#这个是设置静态文件夹目录的路径
+# 这个是设置静态文件夹目录的路径
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, 'blogs/static'),
 )
-#设置文件上传路径，图片上传、文件上传都会存放在此目录里
+# 设置文件上传路径，图片上传、文件上传都会存放在此目录里
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-
-
-#首页配置
-#SIMPLEUI_HOME_PAGE = ''
-#首页标题
-#SIMPLEUI_HOME_TITLE = ''
-#修改LOGO
-SIMPLEUI_LOGO = 'https://avatars2.githubusercontent.com/u/13655483?s=60&v=4'
-#服务器信息
+# 首页配置
+# SIMPLEUI_HOME_PAGE = ''
+# 首页标题
+# SIMPLEUI_HOME_TITLE = ''
+# 修改LOGO
+SIMPLEUI_LOGO = '/static/admin/images/admin-logo.jpg'
+# 服务器信息
 SIMPLEUI_HOME_INFO = False
-#快速操作
+# 快速操作
 SIMPLEUI_HOME_QUICK = True
-#最近动作
+# 最近动作
 SIMPLEUI_HOME_ACTION = True
 
-#使用分析
+# 使用分析
 SIMPLEUI_ANALYSIS = False
-#离线模式
+# 离线模式
 SIMPLEUI_STATIC_OFFLINE = False
-#关闭Loading遮罩层
+# 关闭Loading遮罩层
 SIMPLEUI_LOADING = True

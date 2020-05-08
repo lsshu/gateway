@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import BlogBanner, BlogCategory, BlogTag, BlogTui, BlogArticle, BlogLink
+from .models import BlogBanner, BlogCategory, BlogTag, BlogTui, BlogArticle, BlogLink, BlogKeywords
+
+
 # admin.site.site_header = '修改后'
 # admin.site.site_title = '哈哈'
 
@@ -25,18 +27,28 @@ class BannerAdmin(admin.ModelAdmin):
 @admin.register(BlogCategory)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'index')
+    list_display_links = ('id', 'name')
 
 
 @admin.register(BlogTag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
+
+
+@admin.register(BlogKeywords)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
 
 
 @admin.register(BlogTui)
 class TuiAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
 
 
 @admin.register(BlogLink)
 class LinkAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'linkurl')
+    list_display_links = ('id', 'name')

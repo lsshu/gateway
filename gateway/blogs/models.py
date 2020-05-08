@@ -6,12 +6,42 @@ from django.contrib.auth.models import User
 
 # 导入Django自带用户模块
 
+# 文章标签
+class BlogTag(models.Model):
+    name = models.CharField('文章标签', max_length=100)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
+
+    class Meta:
+        verbose_name = '文章标签'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+# 文章关键词
+class BlogKeywords(models.Model):
+    name = models.CharField('文章关键词', max_length=100)
+    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
+
+    class Meta:
+        verbose_name = '文章关键词'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
 # 文章分类
 class BlogCategory(models.Model):
     name = models.CharField('博客分类', max_length=100)
+    excerpt = models.TextField('摘要', max_length=200, blank=True)
     index = models.IntegerField(default=999, verbose_name='分类排序')
-    parent = models.ForeignKey('self', default=0, on_delete=models.CASCADE, blank=True, null=True, related_name='children', verbose_name='上级分类',
+    parent = models.ForeignKey('self', default=0, on_delete=models.CASCADE, blank=True, null=True,
+                               related_name='children', verbose_name='上级分类',
                                limit_choices_to={'is_abort': False, 'is_root': True})
+    tags = models.ManyToManyField(BlogTag, verbose_name='标签', blank=True)
+    keywords = models.ManyToManyField(BlogKeywords, verbose_name='关键词', blank=True)
     is_root = models.BooleanField(default=False, verbose_name='是否是一级分类')
     sort = models.IntegerField(default=0, verbose_name='排序值')
     thumb = models.ImageField(upload_to='category/%Y/%m', verbose_name='分类图片', null=True, blank=True)
@@ -21,19 +51,6 @@ class BlogCategory(models.Model):
 
     class Meta:
         verbose_name = '博客分类'
-        verbose_name_plural = verbose_name
-
-    def __str__(self):
-        return self.name
-
-
-# 文章标签
-class BlogTag(models.Model):
-    name = models.CharField('文章标签', max_length=100)
-    is_abort = models.BooleanField(default=False, verbose_name='是否删除')
-
-    class Meta:
-        verbose_name = '文章标签'
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -60,6 +77,7 @@ class BlogArticle(models.Model):
     category = models.ForeignKey(BlogCategory, on_delete=models.DO_NOTHING, verbose_name='分类', blank=True, null=True)
     # 使用外键关联分类表与分类是一对多关系
     tags = models.ManyToManyField(BlogTag, verbose_name='标签', blank=True)
+    keywords = models.ManyToManyField(BlogKeywords, verbose_name='关键词', blank=True)
     # 使用外键关联标签表与标签是多对多关系
     thumb = models.ImageField(upload_to='article_thumb/%Y/%m/%d/', verbose_name='文章图片', blank=True, null=True)
     body = UEditorField('内容', width=800, height=500, toolbars="full", imagePath="uploads_images/",

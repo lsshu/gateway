@@ -4,25 +4,27 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def global_variable(request):
-    allcategory = BlogCategory.objects.all()
-    remen = BlogArticle.objects.filter(tui__id=2)[:6]
+    categories = BlogCategory.objects.filter(is_root=True)
+    recommends_one = BlogArticle.objects.filter(tui__id=1)[:6]
+    recommends_two = BlogArticle.objects.filter(tui__id=2)[:6]
+    recommends_three = BlogArticle.objects.filter(tui__id=3)[:6]
     tags = BlogTag.objects.all()
     return locals()
 
 
 # 列表页
-def list(request, lid):
-    list = BlogArticle.objects.filter(category_id=lid)
-    cname = BlogCategory.objects.get(id=lid)
+def category(request, lid):
+    articles = BlogArticle.objects.filter(category_id=lid)
+    category = BlogCategory.objects.get(id=lid)
     page = request.GET.get('page')
-    paginator = Paginator(list, 5)
+    paginator = Paginator(articles, 5)
     try:
-        list = paginator.page(page)  # 获取当前页码的记录
+        articles = paginator.page(page)  # 获取当前页码的记录
     except PageNotAnInteger:
-        list = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
+        articles = paginator.page(1)  # 如果用户输入的页码不是整数时,显示第1页的内容
     except EmptyPage:
-        list = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
-    return render(request, 'list.html', locals())
+        articles = paginator.page(paginator.num_pages)  # 如果用户输入的页数不在系统的页码列表中时,显示最后一页的内容
+    return render(request, 'category.html', locals())
 
 
 # 内容页

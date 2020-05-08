@@ -1,0 +1,143 @@
+{% extends "layouts.html" %}
+{% load static %}
+{% block content %}
+    <article>
+        <div class="blogs left-box">
+            <div class="whitebg lanmu">
+                {% if category.thumb %}
+                    <i><img src="{{ MEDIA_URL }}{{ category.thumb }}"></i>
+
+                {% endif %}
+                <div class="middle-inner">
+                    <h1>{{ category.name }}</h1>
+                    <p>{{ category.excerpt }}</p>
+                    <ul class="lanmu-keywords">
+                        {% for keyword in category.keywords.all %}
+                            <li>{{ keyword.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="clear blank"></div>
+            <div class="blogs-box whitebg">
+                <div class="news-title">
+                    <span class="hnav">
+                        {% for keyword in category.keywords.all %}
+                            <a href="">{{ keyword.name }}</a>
+                        {% endfor %}
+                    </span>
+                    <h2>{{ category.name }}</h2>
+                </div>
+                <div class="blogs-list">
+                    <ul>
+                        {% for article in articles %}
+                            <li>
+                                <h2><a href="{% url 'blog:show' article.id %}"
+                                       title="{{ article.title }}">{{ article.title }}</a></h2>
+                                {% if article.thumb %}
+                                    <i>
+                                        <a href="{% url 'blog:show' article.id %}">
+                                            <img src="{{ MEDIA_URL }}{{ article.thumb }}" srcset="{{ MEDIA_URL }}{{ article.thumb }}"
+                                                 alt="{{ article.title }}">
+                                        </a>
+                                    </i>
+                                {% endif %}
+                                <p>{{ article.excerpt }}</p>
+                                <span date="{{ article.created_time|date:'Y年m月d日' }}">
+                            {% for tag in article.tags.all %}
+                                <a href="{% url 'blog:tags' tag.name %}">{{ tag.name }}</a>
+                            {% endfor %}
+                        </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="pagelist">
+                    {% if articles.has_previous %}
+                        <a href="?page={{ articles.previous_page_number }}" class="prev-page">上一页</a>&nbsp;
+                    {% else %}
+                    {% endif %}
+
+
+                    {% for num in articles.paginator.page_range %}
+                        {% if num %}
+                            {% ifequal num articles.number %}
+                                <a title="Total record" class="active">&nbsp;<b>{{ num }}</b> </a>&nbsp;&nbsp;&nbsp;
+                                <b>1</b>&nbsp;
+                            {% else %}
+                                <a href="?page={{ num }}">{{ num }}</a>&nbsp;
+                            {% endifequal %}
+                        {% else %}
+                            <a class="disabled"><span>...</span></a>
+                        {% endif %}
+                    {% endfor %}
+
+
+                    {% if articles.has_next %}
+                        <a href="?page={{ articles.next_page_number }}" class="next-page">下一页</a>&nbsp;
+                    {% else %}
+                        <a class="prev-page"></a>
+                    {% endif %}
+
+
+                </div>
+            </div>
+        </div>
+        <aside class="side-section right-box">
+            <div class="whitebg tuijian">
+                <h2 class="side-title">站长推荐</h2>
+                <section class="topnews imgscale">
+                    <a href="">
+                        <img src="{% static 'images/pic03.jpg' %}"><span>作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</span>
+                    </a>
+                </section>
+                <ul>
+                    {% for one in recommends_one %}
+                        <li>
+                            <a href="{% url 'blog:show' one.id %}" title="{{ one.title }}" target="_blank">
+                                {% if one.thumb %}
+                                    <i><img src="media/{{ one.thumb }}"></i>
+                                {% endif %}
+                                <p>{{ one.title }}</p>
+                            </a>
+                        </li>
+                    {% endfor %}
+
+
+                </ul>
+            </div>
+            <div class="blank clear"></div>
+            <div class="whitebg paihang">
+                <h2 class="side-title">点击排行</h2>
+                <section class="topnews imgscale"><a href=""><img
+                        src="{% static 'images/pic06.jpg' %}"><span>作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</span></a>
+                </section>
+                <ul>
+                    {% for two in recommends_two %}
+                        <li><i></i><a href="{% url 'blog:show' two.id %}" title="{{ two.title }}"
+                                      target="_blank">{{ two.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="blank clear"></div>
+            <div class="whitebg cloud">
+                <h2 class="side-title">标签云</h2>
+                <ul>
+                    {% for tag in tags %}
+                        <a href="{% url 'blog:tags' tag.name %}" target="_blank">{{ tag.name }}</a>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="ad ad-small">小图广告（320*140）</div>
+            <div class="whitebg suiji">
+                <h2 class="side-title">猜你喜欢</h2>
+                <ul>
+                    {% for three in recommends_three %}
+                        <li><a href="{% url 'blog:show' three.id %}" title="{{ three.title }}"
+                               target="_blank">{{ three.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </aside>
+    </article>
+{% endblock %}
