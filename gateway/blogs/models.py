@@ -2,6 +2,7 @@ from django.db import models
 from components.ueditor.models import UEditorField
 # Create your models here.
 from django.contrib.auth.models import User
+from uuslug import uuslug
 
 
 # 导入Django自带用户模块
@@ -35,6 +36,7 @@ class BlogKeywords(models.Model):
 # 文章分类
 class BlogCategory(models.Model):
     name = models.CharField('博客分类', max_length=100)
+    slug = models.CharField('拼音slug', max_length=200, null=True, blank=True)
     excerpt = models.TextField('摘要', max_length=200, blank=True)
     index = models.IntegerField(default=999, verbose_name='分类排序')
     parent = models.ForeignKey('self', default=0, on_delete=models.CASCADE, blank=True, null=True,
@@ -56,6 +58,12 @@ class BlogCategory(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        if self.slug is None:
+            # self.slug = uuslug(self.name, instance=self, separator="_")  # optional non-dash separator
+            self.slug = uuslug(self.name, instance=self)
+        super().save(*args, **kwargs)
+
 
 # 推荐位
 class BlogTui(models.Model):
@@ -73,6 +81,7 @@ class BlogTui(models.Model):
 # 文章
 class BlogArticle(models.Model):
     title = models.CharField('标题', max_length=70)
+    slug = models.CharField('拼音slug', max_length=200, null=True, blank=True)
     excerpt = models.TextField('摘要', max_length=200, blank=True)
     category = models.ForeignKey(BlogCategory, on_delete=models.DO_NOTHING, verbose_name='分类', blank=True, null=True)
     # 使用外键关联分类表与分类是一对多关系
@@ -102,6 +111,12 @@ class BlogArticle(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if self.slug is None:
+            # self.slug = uuslug(self.title, instance=self, separator="_")  # optional non-dash separator
+            self.slug = uuslug(self.title, instance=self)
+        super().save(*args, **kwargs)
 
 
 # Banner

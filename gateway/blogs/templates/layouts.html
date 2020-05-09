@@ -3,14 +3,18 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>个人博客</title>
-    <meta name="keywords" content="个人博客"/>
-    <meta name="description" content="个人博客"/>
+    {% block title-keywords-description %}
+        <title>个人博客</title>
+        <meta name="keywords" content="个人博客"/>
+        <meta name="description" content="个人博客"/>
+    {% endblock %}
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
     <link href="{% static 'css/m.css' %}" rel="stylesheet">
     <script src="{% static 'js/jquery-1.8.3.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/side-tab.js' %}"></script>
     <!--[if lt IE 9]>
     <script src="{% static 'js/modernizr.js' %}"></script>
     <![endif]-->
@@ -21,14 +25,11 @@
 <header>
     <div class="logo-section box">
         <div class="search">
-            <form action="" method="post" name="searchform" id="searchform">
-                <input name="keyboard" id="keyboard" class="input_text" value="请输入关键字词"
+            <form action="{% url 'blog:search' %}" method="get" name="searchform" id="searchform">
+                <input name="search" id="keyboard" class="input_text" value="{{ search }}"
                        style="color: rgb(153, 153, 153);"
                        onfocus="if(value=='请输入关键字词'){this.style.color='#000';value=''}"
                        onblur="if(value==''){this.style.color='#999';value='请输入关键字词'}" type="text">
-                <input name="show" value="title" type="hidden">
-                <input name="tempid" value="1" type="hidden">
-                <input name="tbname" value="news" type="hidden">
                 <input name="Submit" class="input_submit" value="搜索" type="submit">
             </form>
         </div>
@@ -42,7 +43,7 @@
         <h2>青于蓝</h2>
         <nav>
             <ul id="starlist">
-                <li><a href="/">网站首页</a></li>
+                <li><a href="/">网站首1页</a></li>
                 {% for category in categories %}
                     {% if category.children.all.exists %}
                         <li class="menu">
@@ -97,8 +98,166 @@
     </div>
 </header>
 <div class="clear blank"></div>
-{% block content %}
-{% endblock %}
+<article>
+    <div class="blogs left-box">
+        {% block left-box %}
+            {% block lanmu %}
+                {% if category.thumb %}
+                    <div class="whitebg lanmu">
+
+                        <i><img src="{{ MEDIA_URL }}{{ category.thumb }}"></i>
+
+
+                        <div class="middle-inner">
+                            <h1>{{ category.name }}</h1>
+                            <p>{{ category.excerpt }}</p>
+                            <ul class="lanmu-keywords">
+                                {% for keyword in category.keywords.all %}
+                                    <li>{{ keyword.name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clear blank"></div>
+                {% endif %}
+            {% endblock %}
+
+            <div class="blogs-box whitebg">
+                <div class="news-title">
+                    <span class="hnav">
+                        {% for keyword in category.keywords.all %}
+                            <a href="">{{ keyword.name }}</a>
+                        {% endfor %}
+                    </span>
+                    <h2>{{ category.name }}</h2>
+                </div>
+                <div class="blogs-list">
+                    <ul>
+                        {% for article in articles %}
+                            <li>
+                                <h2><a href="{% url 'blog:show' article.id %}"
+                                       title="{{ article.title }}">{{ article.title }}</a></h2>
+                                {% if article.thumb %}
+                                    <i>
+                                        <a href="{% url 'blog:show' article.id %}">
+                                            <img src="{{ MEDIA_URL }}{{ article.thumb }}"
+                                                 srcset="{{ MEDIA_URL }}{{ article.thumb }}"
+                                                 alt="{{ article.title }}">
+                                        </a>
+                                    </i>
+                                {% endif %}
+                                <p>{{ article.excerpt }}</p>
+                                <span date="{{ article.created_time|date:'Y年m月d日' }}">
+                            {% for tag in article.tags.all %}
+                                <a href="{% url 'blog:tags' tag.name %}">{{ tag.name }}</a>
+                            {% endfor %}
+                        </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% block pagelist %}
+                    <div class="pagelist">
+                        {% if articles.has_previous %}
+                            <a href="?page={{ articles.previous_page_number }}" class="prev-page">上一页</a>&nbsp;
+                        {% else %}
+                        {% endif %}
+
+
+                        {% for num in articles.paginator.page_range %}
+                            {% if num %}
+                                {% ifequal num articles.number %}
+                                    <a title="Total record" class="active">&nbsp;<b>{{ num }}</b> </a>&nbsp;&nbsp;&nbsp;
+                                    <b>1</b>&nbsp;
+                                {% else %}
+                                    <a href="?page={{ num }}">{{ num }}</a>&nbsp;
+                                {% endifequal %}
+                            {% else %}
+                                <a class="disabled"><span>...</span></a>
+                            {% endif %}
+                        {% endfor %}
+
+
+                        {% if articles.has_next %}
+                            <a href="?page={{ articles.next_page_number }}" class="next-page">下一页</a>&nbsp;
+                        {% else %}
+                            {#                            <a class="prev-page"></a>#}
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    </div>
+    <aside class="side-section right-box">
+        {% block right-box %}
+            {% block recommends_one %}
+                <div class="whitebg tuijian">
+                    <h2 class="side-title">站长推荐</h2>
+                    <section class="topnews imgscale">
+                        <a href="">
+                            <img src="{% static 'images/pic03.jpg' %}"><span>作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</span>
+                        </a>
+                    </section>
+                    <ul>
+                        {% for one in recommends_one %}
+                            <li>
+                                <a href="{% url 'blog:show' one.id %}" title="{{ one.title }}" target="_blank">
+                                    {% if one.thumb %}
+                                        <i><img src="{{ MEDIA_URL }}{{ one.thumb }}"></i>
+                                    {% endif %}
+                                    <p>{{ one.title }}</p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="blank clear"></div>
+            {% endblock %}
+
+            {% block recommends_two %}
+                <div class="whitebg paihang">
+                    <h2 class="side-title">点击排行</h2>
+                    <section class="topnews imgscale"><a href=""><img
+                            src="{% static 'images/pic06.jpg' %}"><span>作为一个设计师,如果遭到质疑你是否能恪守自己的原则?</span></a>
+                    </section>
+                    <ul>
+                        {% for two in recommends_two %}
+                            <li><i></i><a href="{% url 'blog:show' two.id %}" title="{{ two.title }}"
+                                          target="_blank">{{ two.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="blank clear"></div>
+            {% endblock %}
+
+            {% block cloud %}
+                <div class="whitebg cloud">
+                    <h2 class="side-title">标签云</h2>
+                    <ul>
+                        {% for tag in tags %}
+                            <a href="{% url 'blog:tags' tag.name %}" target="_blank">{{ tag.name }}</a>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endblock %}
+            {% block ad-small %}
+                <div class="ad ad-small">小图广告（320*140）</div>
+            {% endblock %}
+            {% block recommends_three %}
+                <div class="whitebg suiji">
+                    <h2 class="side-title">猜你喜欢</h2>
+                    <ul>
+                        {% for three in recommends_three %}
+                            <li><a href="{% url 'blog:show' three.id %}" title="{{ three.title }}"
+                                   target="_blank">{{ three.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endblock %}
+        {% endblock %}
+    </aside>
+</article>
+
 
 <footer>
     <div class="footer box">

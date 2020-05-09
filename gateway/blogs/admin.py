@@ -29,6 +29,10 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'index')
     list_display_links = ('id', 'name')
 
+    # def save_model(self, request, obj, form, change):
+    #     obj.index = 100
+    #     super().save_model(request, obj, form, change)
+
 
 @admin.register(BlogTag)
 class TagAdmin(admin.ModelAdmin):
