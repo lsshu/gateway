@@ -16,11 +16,11 @@
                     <ul>
                         {% for article in articles %}
                             <li>
-                                <h2><a href="{% url 'blog:show' article.id %}"
+                                <h2><a href="{% url 'blog:show' article.slug %}"
                                        title="{{ article.title }}">{{ article.title }}</a></h2>
                                 {% if article.thumb %}
                                     <i>
-                                        <a href="{% url 'blog:show' article.id %}">
+                                        <a href="{% url 'blog:show' article.slug %}">
                                             <img src="{{ MEDIA_URL }}{{ article.thumb }}" srcset="{{ MEDIA_URL }}{{ article.thumb }}"
                                                  alt="{{ article.title }}">
                                         </a>

@@ -43,20 +43,20 @@
         <h2>青于蓝</h2>
         <nav>
             <ul id="starlist">
-                <li><a href="/">网站首1页</a></li>
+                <li><a href="/">网站首页</a></li>
                 {% for category in categories %}
                     {% if category.children.all.exists %}
                         <li class="menu">
-                            <a href="{% url 'blog:category' category.id %}">{{ category.name }}</a>
+                            <a href="{% url 'blog:category' category.slug %}">{{ category.name }}</a>
                             <ul class="sub">
                                 {% for child in category.children.all %}
-                                    <li><a href="{% url 'blog:category' child.id %}">{{ child.name }}</a></li>
+                                    <li><a href="{% url 'blog:category' child.slug %}">{{ child.name }}</a></li>
                                 {% endfor %}
                             </ul>
                             <span></span>
                         </li>
                     {% else %}
-                        <li><a href="{% url 'blog:category' category.id %}">{{ category.name }}</a></li>
+                        <li><a href="{% url 'blog:category' category.slug %}">{{ category.name }}</a></li>
                     {% endif %}
                 {% endfor %}
             </ul>
@@ -135,11 +135,11 @@
                     <ul>
                         {% for article in articles %}
                             <li>
-                                <h2><a href="{% url 'blog:show' article.id %}"
+                                <h2><a href="{% url 'blog:show' article.slug %}"
                                        title="{{ article.title }}">{{ article.title }}</a></h2>
                                 {% if article.thumb %}
                                     <i>
-                                        <a href="{% url 'blog:show' article.id %}">
+                                        <a href="{% url 'blog:show' article.slug %}">
                                             <img src="{{ MEDIA_URL }}{{ article.thumb }}"
                                                  srcset="{{ MEDIA_URL }}{{ article.thumb }}"
                                                  alt="{{ article.title }}">
@@ -201,7 +201,7 @@
                     <ul>
                         {% for one in recommends_one %}
                             <li>
-                                <a href="{% url 'blog:show' one.id %}" title="{{ one.title }}" target="_blank">
+                                <a href="{% url 'blog:show' one.slug %}" title="{{ one.title }}" target="_blank">
                                     {% if one.thumb %}
                                         <i><img src="{{ MEDIA_URL }}{{ one.thumb }}"></i>
                                     {% endif %}
@@ -222,7 +222,7 @@
                     </section>
                     <ul>
                         {% for two in recommends_two %}
-                            <li><i></i><a href="{% url 'blog:show' two.id %}" title="{{ two.title }}"
+                            <li><i></i><a href="{% url 'blog:show' two.slug %}" title="{{ two.title }}"
                                           target="_blank">{{ two.title }}</a></li>
                         {% endfor %}
                     </ul>
@@ -248,7 +248,7 @@
                     <h2 class="side-title">猜你喜欢</h2>
                     <ul>
                         {% for three in recommends_three %}
-                            <li><a href="{% url 'blog:show' three.id %}" title="{{ three.title }}"
+                            <li><a href="{% url 'blog:show' three.slug %}" title="{{ three.title }}"
                                    target="_blank">{{ three.title }}</a></li>
                         {% endfor %}
                     </ul>

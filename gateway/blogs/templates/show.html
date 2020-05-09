@@ -30,8 +30,8 @@
                     <div class="share-text">
                         <p>扫描关注青于蓝微信公众号，第一时间获取网站模板更新动态</p>
                         <p>转载请说明来源于"青于蓝排名建站"</p>
-                        <p>本文地址：<a href="{% url 'blog:show' article.id %}"
-                                   target="_blank">{% url 'blog:show' article.id %}</a></p>
+                        <p>本文地址：<a href="{% url 'blog:show' article.slug %}"
+                                   target="_blank">{% url 'blog:show' article.slug %}</a></p>
                     </div>
                 </div>
                 <div class="clear"></div>
@@ -103,7 +103,7 @@
                     </section>
                     <ul>
                         {% for one in recommends_one %}
-                            <li><a href="{% url 'blog:show' one.id %}" title="{{ one.title }}"
+                            <li><a href="{% url 'blog:show' one.slug %}" title="{{ one.title }}"
                                    target="_blank">{% if one.thumb %}
                                 <i><img src="{{ MEDIA_URL }}{{ one.thumb }}"></i>{% endif %}
                                 <p>{{ one.title }}</p></a></li>
@@ -118,7 +118,7 @@
                     </section>
                     <ul>
                         {% for two in recommends_two %}
-                            <li><i></i><a href="{% url 'blog:show' two.id %}" title="{{ two.title }}"
+                            <li><i></i><a href="{% url 'blog:show' two.slug %}" title="{{ two.title }}"
                                           target="_blank">{{ two.title }}</a></li>
                         {% endfor %}
                     </ul>

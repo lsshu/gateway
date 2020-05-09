@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from .models import BlogArticle, BlogCategory, BlogTag, BlogKeywords
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -14,9 +15,9 @@ def global_variable(request):
 
 
 # 列表页
-def category(request, lid):
-    articles = BlogArticle.objects.filter(category_id=lid)
-    category = BlogCategory.objects.get(id=lid)
+def category(request, slug):
+    category = BlogCategory.objects.get(slug=slug)
+    articles = category.blogarticle_set.all()
     page = request.GET.get('page')
     paginator = Paginator(articles, 5)
     try:
@@ -29,8 +30,8 @@ def category(request, lid):
 
 
 # 内容页
-def show(request, sid):
-    article = BlogArticle.objects.get(id=sid)
+def show(request, slug):
+    article = BlogArticle.objects.get(slug=slug)
     hot = BlogArticle.objects.all().order_by('?')[:10]
     previous_article = BlogArticle.objects.filter(created_time__gt=article.created_time,
                                                   category=article.category.id).first()
