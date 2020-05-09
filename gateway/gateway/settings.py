@@ -24,7 +24,7 @@ SECRET_KEY = '5)lb8#fw5s!i79tk3a5fw2i0t6&lctr-f2@75@+em!%1)v4f^t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'components.ueditor',
     'blogs',
 ]

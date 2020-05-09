@@ -15,12 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include, re_path
+from django.conf.urls import url
 from django.views.static import serve
 from django.conf import settings
+from django.contrib.sitemaps.views import sitemap
+
+from sitemaps import StaticViewSitemap, ArticleSiteMap
+
+sitemaps = {
+    'blog': ArticleSiteMap,
+    'static': StaticViewSitemap
+}
 
 urlpatterns = [
     path('blog/', include('blogs.urls', namespace='blog')),
     path('admin/', admin.site.urls),
     path('ueditor/', include('components.ueditor.urls')),  # 添加DjangoUeditor的URL
     re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
 ]

@@ -119,7 +119,9 @@ class BlogArticle(models.Model):
         super().save(*args, **kwargs)
 
 
-# Banner
+    # Banner
+
+
 class BlogBanner(models.Model):
     text_info = models.CharField('标题', max_length=50, default='')
     thumb = models.ImageField('轮播图', upload_to='banner/')
