@@ -15,10 +15,10 @@ def global_variable(request):
 
 # 列表页
 def category(request, lid):
-    articles = BlogArticle.objects.filter(category_id=lid)
+    articles = BlogArticle.objects.filter(category_id=lid).order_by('-id')
     category = BlogCategory.objects.get(id=lid)
     page = request.GET.get('page')
-    paginator = Paginator(articles, 5)
+    paginator = Paginator(articles, 20)
     try:
         articles = paginator.page(page)  # 获取当前页码的记录
     except PageNotAnInteger:

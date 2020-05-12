@@ -28,7 +28,7 @@ sitemaps = {
 }
 
 urlpatterns = [
-    path('blog/', include('blogs.urls', namespace='blog')),
+    path('b', include('blogs.urls', namespace='blog')),
     path('admin/', admin.site.urls),
     path('ueditor/', include('components.ueditor.urls')),  # 添加DjangoUeditor的URL
     re_path('^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
