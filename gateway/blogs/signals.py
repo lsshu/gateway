@@ -46,6 +46,7 @@ def blog_pre_delete(sender, instance, **kwargs):
     """
     print('正在删除实例:', instance)
 
-    instance_url = reverse('detail', args=(instance.ecpid,), host='blog_v0_2')
-    # instance_url = 'https:' + instance_url
-    push_urls(delete_link_url, [instance_url, ])
+    # # instance_url = reverse('detail', args=(instance.id,), host='blog_v0_2')
+    # instance_url = reverse('blog:show', args=[instance.id])
+    # # instance_url = 'https:' + instance_url
+    # push_urls(delete_link_url, [instance_url, ])

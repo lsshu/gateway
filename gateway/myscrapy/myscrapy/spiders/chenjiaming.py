@@ -18,6 +18,7 @@ class ChenjiamingSpider(CrawlSpider):
     def parse_item(self, response):
         item = MyscrapyItem()
         item['title'] = response.xpath('//div[@class="allnotice_title"]/h3/text()').extract_first().strip()
+        item['body'] = response.xpath('//div[@class="allnotice_content"]').extract_first()
         item['user'] = 1
         # item['url'] = response.url
         return item

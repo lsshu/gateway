@@ -38,6 +38,7 @@ def show(request, sid):
                                               category=article.category.id).last()
     article.views = article.views + 1
     article.save()
+    title = article.title
     return render(request, 'show.html', locals())
 
 
